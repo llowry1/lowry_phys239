@@ -1,4 +1,5 @@
 import numpy
+from scipy import signal
 import hw2_Conversions as conv
 from astropy import constants
 
@@ -67,5 +68,29 @@ def findSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceFunc, 
 	#print intensities[-1]
 	return (dists, intensities)
 
+
+#Make a Gaussian distribution with a given maximum and standard deviation
+##params:numPoints = the number of points in the output, std = the standard deviation, maxValue = the max value of the distribution
+##return: an array containing the window
+def makeGaussian(numPoints, std, maxValue):
+	##create a gaussian distribution normalized to 1	
+	window = signal.gaussian(numPoints, std)
+	##renormalize the distribution to the given max value
+	window = maxValue*window
+	return window
+
+
+#Generate cross section as a function of frequency
+##params: freqs = an array of frequencies, maxCrossSect = the maximum value sigma_nu,0, shape = string indicating distribution shape (default = 'Gaussian')
+##return: an array the same size as freqs containing the distribution
+def genCrossSectionForFreqs(freqs, maxCrossSect, shape = 'Gaussian'):
+	if shape == 'Gaussian':
+		numPoints = len(freqs)
+		std = numPoints/10.0
+		dist = makeGaussian(numPoints, std, maxCrossSect)
+		return dist
+	else:
+		print 'Error - no such shape for generating cross sections'
+		return None
 
 	

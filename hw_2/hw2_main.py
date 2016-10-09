@@ -20,7 +20,7 @@ colDens = func.findColDensity(n, depth)
 print "\tColumn Density of the cloud: ", colDens, " cm^-2"
 
 #find the cross sections for given optical depths
-optDepths = numpy.array([1e-2, 1, 1e2])
+optDepths = numpy.array([1e-3, 1, 1e3])
 crossSects = func.findCrossSection(colDens, optDepths)
 print "\tCross Section assuming total optical depth of..."
 print "\t\ta) 10^-3: ", crossSects[0], " cm^2"
@@ -37,6 +37,7 @@ dists, intensities = func.findSpecificIntensity_singleFreq(1000, n, 1e-20, 1.0, 
 print "\tI(d = 100pc) = ", intensities[-1]
 print "\tAssumptions: 1000 steps, cross section = 10^-20 cm^2, I_0 = 1 W/m^2/Hz/sr, and S_nu = 0.5 W/m^2/Hz/sr"
 
+#plot the intensity as a function of distance s
 plt.figure(0)
 plt.title('Question 2: Radiative Transfer (emission + absorption) for Single Frequency\nn = 1 cm^-3, sigma_nu = 10^-20 cm^2, I_nu(s=0) = 1.0 W/m^2/Hz/sr, S_nu = 0.5 W/m^2/Hz/sr')
 plt.xlabel('Distance s [cm]')
@@ -47,6 +48,36 @@ plt.show()
 
 #Question 3--------------------------------------------------------------------------------------------------------
 print "\nQuestion 3:"
+print "\tSee genCrossSectionForFreqs function in hw2_Functions.py"
+
+#make an array of frequencies assuming mostly visible light (~400-800 THz)
+freqs = numpy.linspace(400, 800, 500)
+
+#generate gaussian distributions of cross sections assuming max values calculated in Question 1
+crossSect_1a = func.genCrossSectionForFreqs(freqs, crossSects[0], 'Gaussian')
+crossSect_1b = func.genCrossSectionForFreqs(freqs, crossSects[1], 'Gaussian')
+crossSect_1c = func.genCrossSectionForFreqs(freqs, crossSects[2], 'Gaussian')
+
+#plot the cross sections as a function of frequency
+plt.figure(1)
+plt.suptitle('Question 3: Cross Section as a function of Frequency (Gaussian Distribution)')
+
+plt.subplot(131)
+plt.xlabel('Frequency nu [THz]')
+plt.ylabel('Cross Section sigma(nu) [cm^2]')
+plt.plot(freqs, crossSect_1a)
+
+plt.subplot(132)
+plt.xlabel('Frequency nu [THz]')
+plt.ylabel('Cross Section sigma(nu) [cm^2]')
+plt.plot(freqs, crossSect_1b)
+
+plt.subplot(133)
+plt.xlabel('Frequency nu [THz]')
+plt.ylabel('Cross Section sigma(nu) [cm^2]')
+plt.plot(freqs, crossSect_1c)
+
+plt.show()
 
 
 #Question 4--------------------------------------------------------------------------------------------------------
