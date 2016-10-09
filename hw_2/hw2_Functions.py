@@ -29,7 +29,7 @@ def findAbsorptionCoeff(n, crossSect):
 #Given the number density, cross section, initial intensity, and source funtion determine the specific intensity a distance d away for a single frequency
 #Uses given number of steps to incrementally calculate the specific intensity
 ##params: numSteps = number of steps to calculate at, n = number density [cm^-1], crossSect = cross section [cm^2], initI = initial intensity [W/m^2/Hz/sr], sourceFunc = source function [W/m^2/Hz/sr], d = total distance d [pc]
-##return: the specific intensity at distance d [W/m^2/Hz/sr]
+##return: an array with distances [cm] from 0 to d and an array with the specific intensity [W/m^2/Hz/sr] at each of those distances
 def findSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceFunc, d):
 	
 	##Eq of Radiative Transfer:
@@ -65,7 +65,7 @@ def findSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceFunc, 
 	##return the specific intensity at distance d
 	#print intensities
 	#print intensities[-1]
-	return intensities[-1]
+	return (dists, intensities)
 
 
 	
