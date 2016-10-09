@@ -43,7 +43,7 @@ plt.title('Question 2: Radiative Transfer (emission + absorption) for Single Fre
 plt.xlabel('Distance s [cm]')
 plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
 plt.plot(dists, intensities)
-plt.show()
+#plt.show()
 
 
 #Question 3--------------------------------------------------------------------------------------------------------
@@ -77,9 +77,72 @@ plt.xlabel('Frequency nu [THz]')
 plt.ylabel('Cross Section sigma(nu) [cm^2]')
 plt.plot(freqs, crossSect_1c)
 
-plt.show()
+#plt.show()
 
 
 #Question 4--------------------------------------------------------------------------------------------------------
 print "\nQuestion 4:"
+
+maxI_nu0 = 1.0
+minI_nu0 = 0.2
+maxS_nu = 1.0
+minS_nu = 0.2
+
+'''
+#for 4a, tau_nu(d) >> 1 ==> set tau_nu(d) = 1000
+tau_4a = 1000000
+maxCrossSect_4a = func.findCrossSection(colDens, tau_4a)
+crossSect_4a = func.genCrossSectionForFreqs(freqs, maxCrossSect_4a, 'Gaussian')
+
+finalIntensities_4a = numpy.array([])
+
+for sigma in crossSect_4a:
+	finalIntensities_4a = numpy.append(finalIntensities_4a, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, maxI_nu0, minS_nu, depth))
+
+
+plt.figure(2)
+plt.plot(freqs, finalIntensities_4a)
+plt.show()
+'''
+
+#for 4b, 4c, and 4d, tau_nu(d) < 1
+tau_4bcd = 0.5
+maxCrossSect_4bcd = func.findCrossSection(colDens, tau_4bcd)
+crossSect_4bcd = func.genCrossSectionForFreqs(freqs, maxCrossSect_4bcd, 'Gaussian')
+
+#for 4b, I_nu0 = 0.0
+finalIntensities_4b = numpy.array([])
+for sigma in crossSect_4bcd:
+	finalIntensities_4b = numpy.append(finalIntensities_4b, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, 0, minS_nu, depth))
+
+
+plt.figure(3)
+plt.plot(freqs, finalIntensities_4b)
+
+
+#for 4c, I_nu0 < S_nu
+finalIntensities_4c = numpy.array([])
+for sigma in crossSect_4bcd:
+	finalIntensities_4c = numpy.append(finalIntensities_4c, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, minI_nu0, maxS_nu, depth))
+
+
+plt.figure(4)
+plt.plot(freqs, finalIntensities_4c)
+
+
+#for 4d, I_nu0 > S_nu
+finalIntensities_4d = numpy.array([])
+for sigma in crossSect_4bcd:
+	finalIntensities_4d = numpy.append(finalIntensities_4d, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, maxI_nu0, minS_nu, depth))
+
+
+plt.figure(5)
+plt.plot(freqs, finalIntensities_4d)
+
+
+
+
+plt.show()
+
+
 

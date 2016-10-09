@@ -69,6 +69,15 @@ def findSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceFunc, 
 	return (dists, intensities)
 
 
+#Given the number density, cross section, initial intensity, and source funtion determine the specific intensity a distance d away for a single frequency
+#Uses given number of steps to incrementally calculate the specific intensity
+##params: numSteps = number of steps to calculate at, n = number density [cm^-1], crossSect = cross section [cm^2], initI = initial intensity [W/m^2/Hz/sr], sourceFunc = source function [W/m^2/Hz/sr], d = total distance d [pc]
+##return: the specific intensity [W/m^2/Hz/sr] at distance d
+def findFinalSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceFunc, d):
+	dists, intensities = findSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceFunc, d)
+	return intensities[-1]
+
+
 #Make a Gaussian distribution with a given maximum and standard deviation
 ##params:numPoints = the number of points in the output, std = the standard deviation, maxValue = the max value of the distribution
 ##return: an array containing the window
