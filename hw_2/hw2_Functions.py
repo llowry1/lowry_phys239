@@ -95,7 +95,7 @@ def makeGaussian(numPoints, std, maxValue):
 def genCrossSectionForFreqs(freqs, maxCrossSect, shape = 'Gaussian'):
 	if shape == 'Gaussian':
 		numPoints = len(freqs)
-		std = numPoints/10.0
+		std = numPoints/20.0
 		dist = makeGaussian(numPoints, std, maxCrossSect)
 		return dist
 	else:
