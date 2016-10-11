@@ -82,6 +82,7 @@ plt.plot(freqs, crossSect_1c)
 
 #Question 4--------------------------------------------------------------------------------------------------------
 print "\nQuestion 4:"
+print "\tSee plots of intensity as a function of frequency"
 
 maxI_nu0 = 1.0
 minI_nu0 = 0.2

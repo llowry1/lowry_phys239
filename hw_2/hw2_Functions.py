@@ -1,7 +1,7 @@
 import numpy
 from scipy import signal
 import hw2_Conversions as conv
-from astropy import constants
+#from astropy import constants
 
 
 #Determine the column density in cm^-2 assuming a uniform number density
