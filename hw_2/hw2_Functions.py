@@ -79,14 +79,21 @@ def findFinalSpecificIntensity_singleFreq(numSteps, n, crossSect, initI, sourceF
 
 
 #Make a Gaussian distribution with a given maximum and standard deviation
-##params:numPoints = the number of points in the output, std = the standard deviation, maxValue = the max value of the distribution
-##return: an array containing the window
+##params: numPoints = the number of points in the output, std = the standard deviation, maxValue = the max value of the distribution
+##return: an array containing the distribution
 def makeGaussian(numPoints, std, maxValue):
 	##create a gaussian distribution normalized to 1	
 	window = signal.gaussian(numPoints, std)
 	##renormalize the distribution to the given max value
 	window = maxValue*window
 	return window
+
+
+#Make a linear distribution with a given maximum
+##params: numPoints = the number of points in the output, maxValue = the max value of the distribution
+##return: an array containing the distribution
+def makeLinear(numPoints, maxValue):
+	return maxValue*numpy.ones(numPoints)
 
 
 #Generate cross section as a function of frequency
@@ -97,6 +104,10 @@ def genCrossSectionForFreqs(freqs, maxCrossSect, shape = 'Gaussian'):
 		numPoints = len(freqs)
 		std = numPoints/20.0
 		dist = makeGaussian(numPoints, std, maxCrossSect)
+		return dist
+	elif shape == 'Linear':
+		numPoints = len(freqs)
+		dist = makeLinear(numPoints, maxCrossSect)
 		return dist
 	else:
 		print 'Error - no such shape for generating cross sections'

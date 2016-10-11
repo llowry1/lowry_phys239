@@ -88,11 +88,11 @@ minI_nu0 = 0.2
 maxS_nu = 1.0
 minS_nu = 0.2
 
-'''
+
 #for 4a, tau_nu(d) >> 1 ==> set tau_nu(d) = 1000
-tau_4a = 1000000
+tau_4a = 1000
 maxCrossSect_4a = func.findCrossSection(colDens, tau_4a)
-crossSect_4a = func.genCrossSectionForFreqs(freqs, maxCrossSect_4a, 'Gaussian')
+crossSect_4a = func.genCrossSectionForFreqs(freqs, maxCrossSect_4a, 'Linear')
 
 finalIntensities_4a = numpy.array([])
 
@@ -101,9 +101,14 @@ for sigma in crossSect_4a:
 
 
 plt.figure(2)
+plt.suptitle('Question 4')
+plt.subplot(231)
+plt.title('4a) tau_nu(d) >> 1')
+plt.xlabel('Frequency [THz]')
+plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
+plt.ylim(0, 1.2)
 plt.plot(freqs, finalIntensities_4a)
-plt.show()
-'''
+
 
 #for 4b, 4c, and 4d, tau_nu(d) < 1
 tau_4bcd = 0.5
@@ -113,10 +118,14 @@ crossSect_4bcd = func.genCrossSectionForFreqs(freqs, maxCrossSect_4bcd, 'Gaussia
 #for 4b, I_nu0 = 0.0
 finalIntensities_4b = numpy.array([])
 for sigma in crossSect_4bcd:
-	finalIntensities_4b = numpy.append(finalIntensities_4b, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, 0, minS_nu, depth))
+	finalIntensities_4b = numpy.append(finalIntensities_4b, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, 0, maxS_nu, depth))
 
 
-plt.figure(3)
+plt.subplot(232)
+plt.title('4b) I_nu(0) = 0, tau_nu(d) < 1')
+plt.xlabel('Frequency [THz]')
+plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
+plt.ylim(0, 1.2)
 plt.plot(freqs, finalIntensities_4b)
 
 
@@ -126,7 +135,11 @@ for sigma in crossSect_4bcd:
 	finalIntensities_4c = numpy.append(finalIntensities_4c, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, minI_nu0, maxS_nu, depth))
 
 
-plt.figure(4)
+plt.subplot(233)
+plt.title('4c) I_nu(0) < S_nu, tau_nu(d) < 1')
+plt.xlabel('Frequency [THz]')
+plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
+plt.ylim(0, 1.2)
 plt.plot(freqs, finalIntensities_4c)
 
 
@@ -136,10 +149,45 @@ for sigma in crossSect_4bcd:
 	finalIntensities_4d = numpy.append(finalIntensities_4d, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, maxI_nu0, minS_nu, depth))
 
 
-plt.figure(5)
+plt.subplot(234)
+plt.title('4d) I_nu(0) > S_nu, tau_nu(d) < 1')
+plt.xlabel('Frequency [THz]')
+plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
+plt.ylim(0, 1.2)
 plt.plot(freqs, finalIntensities_4d)
 
 
+#for 4e and 4f, tau_nu(d) < 1 and tau_nu0(d) > 1
+maxTau_4ef = 10.0
+maxCrossSect_4ef = func.findCrossSection(colDens, maxTau_4ef)
+crossSect_4ef = func.genCrossSectionForFreqs(freqs, maxCrossSect_4ef, 'Gaussian')
+
+#for 4e, I_nu0 < S_nu
+finalIntensities_4e = numpy.array([])
+for sigma in crossSect_4ef:
+	finalIntensities_4e = numpy.append(finalIntensities_4e, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, minI_nu0, maxS_nu, depth))
+
+
+plt.subplot(235)
+plt.title('4e) I_nu(0) < S_nu, tau_nu(d) < 1, tau_nu,0(d) > 1')
+plt.xlabel('Frequency [THz]')
+plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
+plt.ylim(0, 1.2)
+plt.plot(freqs, finalIntensities_4e)
+
+
+#for 4f, I_nu0 > S_nu
+finalIntensities_4f = numpy.array([])
+for sigma in crossSect_4ef:
+	finalIntensities_4f = numpy.append(finalIntensities_4f, func.findFinalSpecificIntensity_singleFreq(1000, n, sigma, maxI_nu0, minS_nu, depth))
+
+
+plt.subplot(236)
+plt.title('4f) I_nu(0) > S_nu, tau_nu(d) < 1, tau_nu,0(d) > 1')
+plt.xlabel('Frequency [THz]')
+plt.ylabel('I_nu(s) [W/m^2/Hz/sr]')
+plt.ylim(0, 1.2)
+plt.plot(freqs, finalIntensities_4f)
 
 
 plt.show()
