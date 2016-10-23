@@ -15,10 +15,10 @@ def coulombForce(q1, q2, pos):
 	q2 = conv.e_Coulomb(q2)
 	x = pos[0]
 	y = pos[1]
-	r_sq = (x^2) + (y^2)
-	theta = numpy.arctan2(x, y)
+	r_sq = (x**2) + (y**2)
+	theta = numpy.arctan2(y, x)
 
-	force = (k*q1*q2)/r_sq
+	force = ((-1)*k*q1*q2)/r_sq
 	f_x = force*numpy.cos(theta)
 	f_y = force*numpy.sin(theta)
 
