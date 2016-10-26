@@ -4,13 +4,14 @@ import random
 import hw3_Conversions as conv
 import hw3_Functions as func
 
-#Script to output answers to questions on HW3
+##Script to output answers to questions on HW3
 
 
-#Question 1--------------------------------------------------------------------------------------------------------
+
+##Question 1--------------------------------------------------------------------------------------------------------
 print "Question 1:"
 
-#Choose an initial position pos0 = (x0, y0) for the electron, in Bohr radii, and assume it is coming from the left (x0 < 0)
+##Choose an initial position pos0 = (x0, y0) for the electron, in Bohr radii, and assume it is coming from the left (x0 < 0)
 #r0 = 4000
 #theta0 = conv.deg_rad(150)
 #r0 = random.randint(200,800)
@@ -19,12 +20,12 @@ print "Question 1:"
 #x0 = r0*numpy.cos(theta0)
 #y0 = r0*numpy.sin(theta0)
 
-x0 = -50000
+x0 = -250000
 y0 = 5000
 
 pos0 = numpy.array([x0, y0])
 
-#Set the initial velocity v0 of the electron in the x direction, in Bohr radii/s
+##Set the initial velocity vel0 of the electron in the x direction, in Bohr radii/s
 vel0 = numpy.array([conv.cm_bohr(5e7), 0.0])
 
 
@@ -33,29 +34,30 @@ print "\tInitial velocity: ", vel0
 
 plt.figure(0)
 plt.title("Initial Position")
-plt.xlim(-2000,2000)
-plt.ylim(-2000,2000)
+plt.xlim(-300000,300000)
+plt.ylim(-10000,10000)
 plt.xlabel("x position (a0)")
 plt.ylabel("y position (a0)")
 plt.plot(pos0[0], pos0[1], 'bo')
 plt.grid()
-plt.axhline(y=0, xmin = -2000, xmax = 2000, color = 'k')
-plt.axvline(x=0, ymin = -2000, ymax = 2000, color = 'k')
+plt.axhline(y=0, color = 'k')
+plt.axvline(x=0, color = 'k')
 plt.plot(0,0, 'r8', markersize = 10)
 plt.show()
 
 
-#Question 2--------------------------------------------------------------------------------------------------------
+##Question 2/3--------------------------------------------------------------------------------------------------------
 print "\nQuestion 2-3:"
+print "\tSee plots of position, velocity, and acceleration"
 
 
-#assume charge of the particle at the origin is Ze = 4e
+##assume charge of the particle at the origin is Ze = 4e
 Z = 4
 q1 = 1
 
-#make arrays to hold the times and corresponding position, velocity, and acceleration components
-num = 1000000
-times, timestep = numpy.linspace(0, 1e-11, num, retstep = True) #[s]
+##make arrays to hold the times and corresponding position, velocity, and acceleration components
+num = 10000
+times, timestep = numpy.linspace(0, 5e-11, num, retstep = True) #[s]
 posX = numpy.zeros(len(times))
 posY = numpy.zeros(len(times))
 velX = numpy.zeros(len(times))
@@ -63,7 +65,7 @@ velY = numpy.zeros(len(times))
 accX = numpy.zeros(len(times))
 accY = numpy.zeros(len(times))
 
-#set initial position, velocity, and acceleration
+##set initial position, velocity, and acceleration
 posX[0] = pos0[0]
 posY[0] = pos0[1]
 velX[0] = vel0[0]
@@ -105,85 +107,106 @@ for time in times:
 #print accY
 
 
-#Plot positions
-#plt.figure(1)
-#plt.title("Position")
-#plt.xlabel("x position (a0)")
-#plt.ylabel("y position (a0)")
+##Plot positions
+plt.figure(1)
+plt.title("Position")
+plt.xlabel("x position (a0)")
+plt.ylabel("y position (a0)")
 
-#i1 = 0
-#for num in posX:
-#	if i1 == 0:
-#		plt.plot(posX[i1], posY[i1], 'r*', markersize = 15)
-#	else:
-#		plt.plot(posX[i1], posY[i1], 'b.')
-#	i1 = i1 + 1
-#
-#plt.grid()
-#plt.axhline(y=0, color = 'k')
-#plt.axvline(x=0, color = 'k')
-#plt.plot(0,0, 'r8', markersize = 10)
+i1 = 0
+for num in posX:
+	if i1 == 0:
+		plt.plot(posX[i1], posY[i1], 'r*', markersize = 15)
+	else:
+		plt.plot(posX[i1], posY[i1], 'b.')
+	i1 = i1 + 1
 
-#Plot velocities
-#plt.figure(2)
-#plt.title("Velocity")
-#plt.xlabel("x velocity (a0/s)")
-#plt.ylabel("y velocity (a0/s)")#
-#
-#i2 = 0
-#for num in velX:
-#	if i2 == 0:
-#		plt.plot(velX[i2], velY[i2], 'r*', markersize = 15)
-#	else:
-#		plt.plot(velX[i2], velY[i2], 'b.')
-#	i2 = i2 + 1
-#
-#plt.grid()
-#plt.axhline(y=0, color = 'k')
-#plt.axvline(x=0, color = 'k')
+plt.grid()
+plt.axhline(y=0, color = 'k')
+plt.axvline(x=0, color = 'k')
+plt.plot(0,0, 'r8', markersize = 10)
 
-#Plot accelerations
-#plt.figure(3)
-#plt.title("Acceleration")
-#plt.xlabel("x acceleration (a0/s^2)")
-#plt.ylabel("y acceleration (a0/s^2)")
-#
-#i3 = 0
-#for num in accX:
-#	if i3 == 0:
-#		plt.plot(accX[i3], accY[i3], 'r*', markersize = 15)
-#	else:
-#		plt.plot(accX[i3], accY[i3], 'b.')
-#	i3 = i3 + 1
+##Plot velocities
+plt.figure(2)
+plt.title("Velocity")
+plt.xlabel("x velocity (a0/s)")
+plt.ylabel("y velocity (a0/s)")#
 
-#plt.grid()
-#plt.axhline(y=0, color = 'k')
-#plt.axvline(x=0, color = 'k')
+i2 = 0
+for num in velX:
+	if i2 == 0:
+		plt.plot(velX[i2], velY[i2], 'r*', markersize = 15)
+	else:
+		plt.plot(velX[i2], velY[i2], 'b.')
+	i2 = i2 + 1
 
+plt.grid()
+plt.axhline(y=0, color = 'k')
+plt.axvline(x=0, color = 'k')
 
+##Plot accelerations
+plt.figure(3)
+plt.title("Acceleration")
+plt.xlabel("x acceleration (a0/s^2)")
+plt.ylabel("y acceleration (a0/s^2)")
+
+i3 = 0
+for num in accX:
+	if i3 == 0:
+		plt.plot(accX[i3], accY[i3], 'r*', markersize = 15)
+	else:
+		plt.plot(accX[i3], accY[i3], 'b.')
+	i3 = i3 + 1
+
+plt.grid()
+plt.axhline(y=0, color = 'k')
+plt.axvline(x=0, color = 'k')
+
+##Plot accelerations as a function of time
 plt.figure(4)
+plt.suptitle("Acceleration Components")
 plt.subplot(121)
 plt.title("Acceleration x")
-plt.xlabel("Time (s)")
-plt.ylabel("x-Acceleration (a0/s^2)")
+plt.xlabel("time (s)")
+plt.ylabel("x acceleration (a0/s^2)")
 plt.plot(times, accX)
 plt.subplot(122)
 plt.title("Acceleration y")
-plt.xlabel("Time (s)")
-plt.ylabel("y-Acceleration (a0/s^2)")
+plt.xlabel("time (s)")
+plt.ylabel("y acceleration (a0/s^2)")
 plt.plot(times, accY)
 
 
-#Question 2--------------------------------------------------------------------------------------------------------
+##Question 4--------------------------------------------------------------------------------------------------------
 print "\nQuestion 4:"
+print "\tSee plots of Fourier Transforms"
 
+##Take the Fourier transforms of the x- and y-components of the acceleration
 ftX = numpy.fft.fft(accX)
 n = accX.size
 freqs = numpy.fft.fftfreq(n, timestep)
-plt.figure()
-plt.plot(freqs, ftX, 'b')
-plt.plot(freqs, ftX, 'r.')
-plt.show()
 
+#print "Highest Freq: ", freqs[-1]
+#print "Num Freqs: ", len(freqs)
+#print "Freq Step: ", freqs[-1] - freqs[-2]
+
+plt.figure()
+plt.plot(freqs, numpy.square(numpy.abs(ftX)), 'b')
+plt.plot(freqs, numpy.square(numpy.abs(ftX)), 'r.')
+
+
+ftY = numpy.fft.fft(accY)
+plt.figure()
+plt.plot(freqs, numpy.square(numpy.abs(ftY)), 'b')
+plt.plot(freqs, numpy.square(numpy.abs(ftY)), 'r.')
+
+
+acc = numpy.sqrt(numpy.square(accX) + numpy.square(accY))
+ft = numpy.fft.fft(acc)
+
+plt.figure()
+plt.plot(freqs, numpy.square(numpy.abs(ft)), 'b')
+plt.plot(freqs, numpy.square(numpy.abs(ft)), 'r.')
+plt.show()
 
 
