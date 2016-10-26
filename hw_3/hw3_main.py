@@ -55,49 +55,53 @@ print "\tSee plots of position, velocity, and acceleration"
 Z = 4
 q1 = 1
 
-##make arrays to hold the times and corresponding position, velocity, and acceleration components
-num = 10000
-times, timestep = numpy.linspace(0, 5e-11, num, retstep = True) #[s]
-posX = numpy.zeros(len(times))
-posY = numpy.zeros(len(times))
-velX = numpy.zeros(len(times))
-velY = numpy.zeros(len(times))
-accX = numpy.zeros(len(times))
-accY = numpy.zeros(len(times))
+###make arrays to hold the times and corresponding position, velocity, and acceleration components
+#num = 10000
+#times, timestep = numpy.linspace(0, 5e-11, num, retstep = True) #[s]
+#posX = numpy.zeros(len(times))
+#posY = numpy.zeros(len(times))
+#velX = numpy.zeros(len(times))
+#velY = numpy.zeros(len(times))
+#accX = numpy.zeros(len(times))
+#accY = numpy.zeros(len(times))
+#
+###set initial position, velocity, and acceleration
+#posX[0] = pos0[0]
+#posY[0] = pos0[1]
+#velX[0] = vel0[0]
+#velY[0] = vel0[1]
+#
+#acc0 = func.getAccel(func.coulombForce(1, Z, pos0))
+#accX[0] = acc0[0]
+#accY[0] = acc0[1]
+#
+#
+#i = 0
+#for time in times:
+#	if i == 0:
+#		prevPos = pos0
+#		prevVel = vel0
+#		prevAcc = acc0	
+#	else:
+#		vel = prevVel + prevAcc*timestep
+#		velX[i] = vel[0]
+#		velY[i] = vel[1]
+#		pos = prevPos + vel*timestep
+#		posX[i] = pos[0]
+#		posY[i] = pos[1]
+#		acc = func.getAccel(func.coulombForce(1, Z, pos))
+#		accX[i] = acc[0]
+#		accY[i] = acc[1]
+#		
+#		prevPos = pos
+#		prevVel = vel
+#		prevAcc = acc
+#		
+#	i = i+1
 
-##set initial position, velocity, and acceleration
-posX[0] = pos0[0]
-posY[0] = pos0[1]
-velX[0] = vel0[0]
-velY[0] = vel0[1]
 
-acc0 = func.getAccel(func.coulombForce(1, Z, pos0))
-accX[0] = acc0[0]
-accY[0] = acc0[1]
-
-
-i = 0
-for time in times:
-	if i == 0:
-		prevPos = pos0
-		prevVel = vel0
-		prevAcc = acc0	
-	else:
-		vel = prevVel + prevAcc*timestep
-		velX[i] = vel[0]
-		velY[i] = vel[1]
-		pos = prevPos + vel*timestep
-		posX[i] = pos[0]
-		posY[i] = pos[1]
-		acc = func.getAccel(func.coulombForce(1, Z, pos))
-		accX[i] = acc[0]
-		accY[i] = acc[1]
-		
-		prevPos = pos
-		prevVel = vel
-		prevAcc = acc
-		
-	i = i+1
+print func.test(5)
+#posX, posY, velX, velY, accX, accY = func.makeArrays(pos0, vel0, q1, Z)
 
 #print posX
 #print posY
@@ -190,23 +194,67 @@ freqs = numpy.fft.fftfreq(n, timestep)
 #print "Num Freqs: ", len(freqs)
 #print "Freq Step: ", freqs[-1] - freqs[-2]
 
-plt.figure()
+plt.figure(5)
+plt.suptitle("FT: Acceleration X")
+plt.subplot(121)
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Power (arbitrary units)")
 plt.plot(freqs, numpy.square(numpy.abs(ftX)), 'b')
 plt.plot(freqs, numpy.square(numpy.abs(ftX)), 'r.')
+plt.subplot(122)
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Power (arbitrary units)")
+plt.plot(freqs, numpy.square(numpy.abs(ftX)), 'b')
+plt.plot(freqs, numpy.square(numpy.abs(ftX)), 'r.')
+plt.xlim(0, 2e12)
 
 
 ftY = numpy.fft.fft(accY)
-plt.figure()
+plt.figure(6)
+plt.suptitle("FT: Acceleration Y")
+plt.subplot(121)
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Power (arbitrary units)")
 plt.plot(freqs, numpy.square(numpy.abs(ftY)), 'b')
 plt.plot(freqs, numpy.square(numpy.abs(ftY)), 'r.')
+plt.subplot(122)
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Power (arbitrary units)")
+plt.plot(freqs, numpy.square(numpy.abs(ftY)), 'b')
+plt.plot(freqs, numpy.square(numpy.abs(ftY)), 'r.')
+plt.xlim(0, 2e12)
 
 
+##Take the Fourier Transform of the magnitude of the acceleration
 acc = numpy.sqrt(numpy.square(accX) + numpy.square(accY))
 ft = numpy.fft.fft(acc)
 
-plt.figure()
+plt.figure(7)
+plt.suptitle("FT: Acceleration (a = ((a_x)^2 + (a_y)^2)^(1/2))")
+plt.subplot(121)
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Power (arbitrary units)")
 plt.plot(freqs, numpy.square(numpy.abs(ft)), 'b')
 plt.plot(freqs, numpy.square(numpy.abs(ft)), 'r.')
+plt.subplot(122)
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Power (arbitrary units)")
+plt.plot(freqs, numpy.square(numpy.abs(ft)), 'b')
+plt.plot(freqs, numpy.square(numpy.abs(ft)), 'r.')
+plt.xlim(0, 2e12)
 plt.show()
+
+
+##Question 5--------------------------------------------------------------------------------------------------------
+print "\nQuestion 5:"
+print "See plots of peak frequency vs. b and v0"
+
+
+##Determine how changing b affects the peak frequency
+
+##Specify range of impact parameters to look at
+b = numpy.arange(2000, 10000, 100)
+
+
 
 
