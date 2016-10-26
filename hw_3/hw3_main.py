@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import random
 import hw3_Conversions as conv
 import hw3_Functions as func
+import hw3_Functions2 as func2
 
 ##Script to output answers to questions on HW3
 
@@ -55,53 +56,54 @@ print "\tSee plots of position, velocity, and acceleration"
 Z = 4
 q1 = 1
 
-###make arrays to hold the times and corresponding position, velocity, and acceleration components
-#num = 10000
-#times, timestep = numpy.linspace(0, 5e-11, num, retstep = True) #[s]
-#posX = numpy.zeros(len(times))
-#posY = numpy.zeros(len(times))
-#velX = numpy.zeros(len(times))
-#velY = numpy.zeros(len(times))
-#accX = numpy.zeros(len(times))
-#accY = numpy.zeros(len(times))
-#
-###set initial position, velocity, and acceleration
-#posX[0] = pos0[0]
-#posY[0] = pos0[1]
-#velX[0] = vel0[0]
-#velY[0] = vel0[1]
-#
-#acc0 = func.getAccel(func.coulombForce(1, Z, pos0))
-#accX[0] = acc0[0]
-#accY[0] = acc0[1]
-#
-#
-#i = 0
-#for time in times:
-#	if i == 0:
-#		prevPos = pos0
-#		prevVel = vel0
-#		prevAcc = acc0	
-#	else:
-#		vel = prevVel + prevAcc*timestep
-#		velX[i] = vel[0]
-#		velY[i] = vel[1]
-#		pos = prevPos + vel*timestep
-#		posX[i] = pos[0]
-#		posY[i] = pos[1]
-#		acc = func.getAccel(func.coulombForce(1, Z, pos))
-#		accX[i] = acc[0]
-#		accY[i] = acc[1]
-#		
-#		prevPos = pos
-#		prevVel = vel
-#		prevAcc = acc
-#		
-#	i = i+1
+##make arrays to hold the times and corresponding position, velocity, and acceleration components
+num = 10000
+times, timestep = numpy.linspace(0, 5e-11, num, retstep = True) #[s]
+posX = numpy.zeros(len(times))
+posY = numpy.zeros(len(times))
+velX = numpy.zeros(len(times))
+velY = numpy.zeros(len(times))
+accX = numpy.zeros(len(times))
+accY = numpy.zeros(len(times))
+
+##set initial position, velocity, and acceleration
+posX[0] = pos0[0]
+posY[0] = pos0[1]
+velX[0] = vel0[0]
+velY[0] = vel0[1]
+
+acc0 = func.getAccel(func.coulombForce(1, Z, pos0))
+accX[0] = acc0[0]
+accY[0] = acc0[1]
 
 
-print func.test(5)
-#posX, posY, velX, velY, accX, accY = func.makeArrays(pos0, vel0, q1, Z)
+i = 0
+for time in times:
+	if i == 0:
+		prevPos = pos0
+		prevVel = vel0
+		prevAcc = acc0	
+	else:
+		vel = prevVel + prevAcc*timestep
+		velX[i] = vel[0]
+		velY[i] = vel[1]
+		pos = prevPos + vel*timestep
+		posX[i] = pos[0]
+		posY[i] = pos[1]
+		acc = func.getAccel(func.coulombForce(1, Z, pos))
+		accX[i] = acc[0]
+		accY[i] = acc[1]
+		
+		prevPos = pos
+		prevVel = vel
+		prevAcc = acc
+		
+	i = i+1
+
+
+#print func2.test(5)
+#posXtest = func2.makeArrays(pos0, vel0, q1, Z)
+#print posXtest
 
 #print posX
 #print posY
@@ -126,6 +128,8 @@ for num in posX:
 	i1 = i1 + 1
 
 plt.grid()
+plt.xlim(-300000, 300000)
+plt.ylim(-10000, 10000)
 plt.axhline(y=0, color = 'k')
 plt.axvline(x=0, color = 'k')
 plt.plot(0,0, 'r8', markersize = 10)
@@ -253,8 +257,74 @@ print "See plots of peak frequency vs. b and v0"
 ##Determine how changing b affects the peak frequency
 
 ##Specify range of impact parameters to look at
-b = numpy.arange(2000, 10000, 100)
+impactParams = numpy.arange(2000, 10000, 100)
+vel0 = numpy.array([conv.cm_bohr(5e7), 0.0])
 
+##Make an array to hold the peak frequencies associated with each impact parameter
+peakFreqs = numpy.zeros(len(impactParams))
 
-
-
+i4 = 0
+for b in impactParams:
+    pos0 = numpy.array([x0,b])
+    ##make arrays to hold the times and corresponding position, velocity, and acceleration components
+    num = 10000
+    times, timestep = numpy.linspace(0, 5e-11, num, retstep = True) #[s]
+    #posX = numpy.zeros(len(times))
+    #posY = numpy.zeros(len(times))
+    #velX = numpy.zeros(len(times))
+    #velY = numpy.zeros(len(times))
+    accX = numpy.zeros(len(times))
+    accY = numpy.zeros(len(times))
+    
+    ##set initial position, velocity, and acceleration
+    #posX[0] = pos0[0]
+    #posY[0] = pos0[1]
+    #velX[0] = vel0[0]
+    #velY[0] = vel0[1]
+    
+    acc0 = func.getAccel(func.coulombForce(1, Z, pos0))
+    accX[0] = acc0[0]
+    accY[0] = acc0[1]
+    
+    
+    i = 0
+    for time in times:
+   	if i == 0:
+  		prevPos = pos0
+  		prevVel = vel0
+  		prevAcc = acc0	
+   	else:
+  		vel = prevVel + prevAcc*timestep
+  		#velX[i] = vel[0]
+  		#velY[i] = vel[1]
+  		pos = prevPos + vel*timestep
+  		#posX[i] = pos[0]
+  		#posY[i] = pos[1]
+  		acc = func.getAccel(func.coulombForce(1, Z, pos))
+  		accX[i] = acc[0]
+  		accY[i] = acc[1]
+  		
+  		prevPos = pos
+  		prevVel = vel
+  		prevAcc = acc
+  		
+   	i = i+1
+   
+    ##take the FT of the x component of the acceleration
+    ftXb = numpy.fft.fft(accX)
+    n = accX.size
+    freqs = numpy.fft.fftfreq(n, timestep)
+    
+    peak = numpy.amax(ftXb)
+    w = numpy.where(ftXb == peak)
+    w1 = w[0][0]
+    print w1
+    peakFreqs[i4] = freqs[w1]
+    print peakFreqs[i4]
+    
+    i4 = i4+1
+    
+#plt.figure()
+#plt.plot(b, peakFreqs)
+#
+#plt.show()
