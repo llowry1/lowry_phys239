@@ -32,13 +32,41 @@ plt.xlabel("Frequency [Hz]")
 plt.ylabel("L_nu [L_sun/Hz]")
 ax.set_xscale("log")
 ax.set_yscale("log")
-plt.errorbar(freq, l_nu, yerr = l_nu_err)
+plt.errorbar(freq, l_nu, yerr = l_nu_err, color = 'g')
 #plt.show()
 
 
 
 ##Question 2--------------------------------------------------------------------------------------------------------
 print "Question 2:"
+
+
+##Question 2a - Starlight-------------------------------------------------------------------------------------------
+print "2a - Starlight:"
+
+star_data = numpy.loadtxt("M82_1999Data.txt", skiprows = 3, usecols = [0, 10], unpack = True)
+star_wavelengths = star_data[0]*(0.0001) #convert from angstroms to um
+
+#star_data = numpy.loadtxt("hw4_starlight.spectrum1", skiprows = 6, usecols = [1, 2], unpack = True)
+#star_wavelengths = star_data[0]*(0.0001) #convert from angstroms to um
+
+star_freqs = func.wavelengthToFreq(star_wavelengths)
+star = star_data[1]
+star = 10**star
+
+star = star*(5e-42)
+
+
+figcount = figcount + 1
+plt.figure(figcount)
+plt.title("Starlight Component")
+plt.xlabel("Frequency [Hz]")
+plt.ylabel("Starlight")
+plt.ylim(1e-9)
+plt.loglog(star_freqs, star)
+plt.loglog(freq, l_nu)
+
+
 
 ##Question 2b - Dust------------------------------------------------------------------------------------------------
 print "2b - Dust:"
@@ -58,24 +86,24 @@ dust_wavelengths = dust_data[0]
 dust_freqs = func.wavelengthToFreq(dust_wavelengths)
 dust_Q = dust_data[1]
 
-figcount = figcount + 1
-plt.figure(figcount)
-plt.title("Mie Scattering Cross Section Q_abs")
-plt.xlabel("Frequency [Hz]")
-plt.ylabel("Q_abs")
-plt.loglog(dust_freqs, dust_Q)
+#figcount = figcount + 1
+#plt.figure(figcount)
+#plt.title("Mie Scattering Cross Section Q_abs")
+#plt.xlabel("Frequency [Hz]")
+#plt.ylabel("Q_abs")
+#plt.loglog(dust_freqs, dust_Q)
 
 #get dust_rho from M_gal/Mdust ~ 100
 dust_rho = 4.4e-23 #[kg/m^3]
 
 opacity = func.opacity(dust_Q, dust_size, dust_rho)
 
-figcount = figcount + 1
-plt.figure(figcount)
-plt.title("Opacity")
-plt.xlabel("Frequency [Hz]")
-plt.ylabel("Opacity")
-plt.loglog(dust_freqs, opacity)
+#figcount = figcount + 1
+#plt.figure(figcount)
+#plt.title("Opacity")
+#plt.xlabel("Frequency [Hz]")
+#plt.ylabel("Opacity")
+#plt.loglog(dust_freqs, opacity)
 
 
 B_nu = numpy.array([])
@@ -83,27 +111,28 @@ for f in dust_freqs:
 	B = func.B_nu(200, f)
 	B_nu = numpy.append(B_nu, B)
 
-print len(freq)
-print len(B_nu)
+#print len(freq)
+#print len(B_nu)
 
 
-figcount = figcount + 1
-plt.figure(figcount)
-plt.title("Blackbody B_nu")
-plt.xlabel("Frequency [Hz]")
-plt.ylabel("B_nu")
-plt.loglog(dust_freqs, B_nu, 'bo')
+#figcount = figcount + 1
+#plt.figure(figcount)
+#plt.title("Blackbody B_nu")
+#plt.xlabel("Frequency [Hz]")
+#plt.ylabel("B_nu")
+#plt.loglog(dust_freqs, B_nu, 'bo')
 
-M_dust = M_dust*(1e-11)
+M_dust = M_dust*(5e-18)
 S_nu = (M_dust/(D_M82**2))*opacity*B_nu
 
 
 figcount = figcount + 1
 plt.figure(figcount)
-plt.title("S_nu")
+plt.title("Dust Component")
 plt.xlabel("Frequency [Hz]")
 plt.ylabel("S_nu")
 plt.xlim(freq[-1], freq[0])
+plt.ylim(1e-34)
 plt.loglog(dust_freqs, S_nu)
 plt.loglog(freq, l_nu)
 
@@ -137,19 +166,19 @@ print "2d - Bremsstrahlung:"
 
 Pbrem = numpy.array([])
 for f in freq:
-	P = func.bremP(f, 1000, g_ff = 1e80)
+	P = func.bremP(f, 10000, g_ff = 1e77)
 	Pbrem = numpy.append(Pbrem, P)
 
 figcount = figcount + 1
 plt.figure(figcount)
-plt.title("Bremsstrahlung Component")
+plt.title("Free-Free Component")
 plt.xlabel("Frequency [Hz]")
 plt.ylabel("Power")
 plt.loglog(freq, Pbrem)
 plt.loglog(freq, l_nu)
 
 
-##Question 2d - Bremsstrahlung--------------------------------------------------------------------------------------
+##Question 3 - All Components---------------------------------------------------------------------------------------
 
 
 figcount = figcount + 1
@@ -157,10 +186,15 @@ plt.figure(figcount)
 plt.title("All Components")
 plt.xlabel("Frequency [Hz]")
 plt.ylabel("Power")
+plt.xlim(1e9, 1e19)
+plt.ylim(1e-7, 1e-2)
+plt.loglog(star_freqs, star, label = "Starlight")
+plt.loglog(freq, l_nu, label = "M82 Data")
 plt.loglog(dust_freqs, S_nu, label = "Dust")
 plt.loglog(freq, Psync, label = "Synchrotron")
 plt.loglog(freq, Pbrem, label = "Bremsstrahlung")
-plt.loglog(freq, l_nu)
+plt.loglog(freq, l_nu, label = "M82 Data", color = 'g')
+plt.legend()
 plt.show()
 
 
